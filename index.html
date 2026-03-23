@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flores Amarillas</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      overflow: hidden;
+      font-family: Georgia, "Times New Roman", serif;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffe88a 0%, #ffd8a8 30%, #ffc7d8 70%, #ffe4ef 100%);
+      color: #6b3f1d;
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .glow-1,
+    .glow-2 {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(14px);
+      pointer-events: none;
+    }
+
+    .glow-1 {
+      width: 620px;
+      height: 620px;
+      top: -40px;
+      left: -60px;
+      background: radial-gradient(circle, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.08) 45%, transparent 72%);
+      animation: floatGlow 9s ease-in-out infinite alternate;
+    }
+
+    .glow-2 {
+      width: 420px;
+      height: 420px;
+      right: 10%;
+      bottom: 10%;
+      background: radial-gradient(circle, rgba(255,245,200,0.18) 0%, rgba(255,255,255,0.04) 50%, transparent 75%);
+      animation: floatGlow2 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatGlow {
+      from { transform: translate(0, 0); }
+      to { transform: translate(28px, 22px); }
+    }
+
+    @keyframes floatGlow2 {
+      from { transform: translate(0, 0); }
+      to { transform: translate(-18px, -16px); }
+    }
+
+    .top-text {
+      position: absolute;
+      top: 26px;
+      width: 100%;
+      text-align: center;
+      font-size: 1.4rem;
+      color: #77431e;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.45);
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: fadeSlideDown 1.8s ease forwards;
+      animation-delay: 3s;
+      z-index: 80;
+      padding: 0 20px;
+    }
+
+    .love-letter {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: min(420px, 42vw);
+      padding: 16px 18px;
+      background: rgba(255, 248, 228, 0.42);
+      border: 1px solid rgba(107, 63, 29, 0.12);
+      border-radius: 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px rgba(107, 63, 29, 0.08);
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #6b3f1d;
+      opacity: 0;
+      transform: translateY(-12px);
+      animation: fadeSlideDown 1.8s ease forwards;
+      animation-delay: 3.7s;
+      z-index: 90;
+    }
+
+    .center-love {
+      position: absolute;
+      left: 48%;
+      top: 50%;
+      transform: translate(-50%, -50%) scale(0.92);
+      font-size: 3.2rem;
+      color: #6f3b1e;
+      text-align: center;
+      text-shadow: 0 4px 14px rgba(255,255,255,0.45);
+      opacity: 0;
+      animation: centerPop 1.8s ease forwards;
+      animation-delay: 2.6s;
+      z-index: 85;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    @keyframes fadeSlideDown {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes centerPop {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -44%) scale(0.88);
+      }
+      70% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.04);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .message-box {
+      position: absolute;
+      left: 24px;
+      bottom: 22px;
+      z-index: 100;
+      max-width: 420px;
+      padding: 16px 20px;
+      background: rgba(255, 248, 228, 0.42);
+      border: 1px solid rgba(107, 63, 29, 0.12);
+      border-radius: 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 24px rgba(107, 63, 29, 0.08);
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 1.6s ease forwards;
+      animation-delay: 4.2s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message-box h1 {
+      font-size: 1.35rem;
+      font-weight: normal;
+      margin-bottom: 8px;
+      color: #6b3f1d;
+    }
+
+    .counter {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: #6b3f1d;
+    }
+
+    .counter strong {
+      color: #7d4215;
+    }
+
+    .bouquet-wrap {
+      position: absolute;
+      right: -10px;
+      bottom: -20px;
+      width: 700px;
+      height: 780px;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .bouquet-stems {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .stem-line {
+      position: absolute;
+      right: 155px;
+      bottom: 115px;
+      transform-origin: bottom center;
+      border-radius: 10px;
+      background: linear-gradient(to top, #4d7a30, #83b25c);
+      opacity: 0;
+      animation: growStem 1.3s ease forwards;
+    }
+
+    @keyframes growStem {
+      0% {
+        opacity: 0;
+        height: 0;
+      }
+      100% {
+        opacity: 0.9;
+      }
+    }
+
+    .leaf {
+      position: absolute;
+      background: linear-gradient(135deg, #8fcf64, #5f933b);
+      border-radius: 100% 0 100% 0;
+      opacity: 0;
+      animation: leafShow 1s ease forwards;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    @keyframes leafShow {
+      from {
+        opacity: 0;
+        transform: scale(0.6) rotate(0deg);
+      }
+      to {
+        opacity: 0.95;
+      }
+    }
+
+    .flower-node {
+      position: absolute;
+      opacity: 0;
+      transform: scale(0.2) rotate(-6deg);
+      animation: bloom 0.95s ease forwards;
+      z-index: 4;
+    }
+
+    @keyframes bloom {
+      0% {
+        opacity: 0;
+        transform: scale(0.2) rotate(-8deg);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.08) rotate(4deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .flower {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+    }
+
+    .petal {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #fff8bf 0%, #ffe56c 32%, #f7c81a 72%, #dfb100 100%);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+
+    .center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, #7b4c12 0%, #60370a 70%, #4a2708 100%);
+      z-index: 3;
+    }
+
+    .bow {
+      position: absolute;
+      right: 108px;
+      bottom: 102px;
+      width: 150px;
+      height: 112px;
+      z-index: 15;
+      opacity: 0;
+      transform: scale(0.7);
+      animation: bowShow 1.2s ease forwards;
+      animation-delay: 2.2s;
+    }
+
+    @keyframes bowShow {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .bow-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 34px;
+      height: 42px;
+      background: linear-gradient(180deg, #be1722, #91101a);
+      border-radius: 10px;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    }
+
+    .bow-left,
+    .bow-right {
+      position: absolute;
+      top: 18px;
+      width: 58px;
+      height: 42px;
+      background: linear-gradient(135deg, #d91f2d, #a7121d);
+      border-radius: 14px 26px 14px 26px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    }
+
+    .bow-left {
+      left: 14px;
+      transform: rotate(-20deg);
+    }
+
+    .bow-right {
+      right: 14px;
+      transform: scaleX(-1) rotate(-20deg);
+    }
+
+    .ribbon-left,
+    .ribbon-right {
+      position: absolute;
+      top: 54px;
+      width: 13px;
+      height: 64px;
+      background: linear-gradient(180deg, #c61a26, #8e1018);
+      border-radius: 10px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    }
+
+    .ribbon-left {
+      left: 56px;
+      transform: rotate(14deg);
+    }
+
+    .ribbon-right {
+      right: 56px;
+      transform: rotate(-10deg);
+    }
+
+    .falling-container {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 20;
+    }
+
+    .falling-flower {
+      position: absolute;
+      top: -40px;
+      opacity: 0.95;
+      animation-name: fallWind;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .mini-petal {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7a8 0%, #ffe24b 50%, #dfb300 100%);
+    }
+
+    .mini-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: #5b310d;
+    }
+
+    @keyframes fallWind {
+      0% {
+        transform: translate(0, -30px) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      25% {
+        transform: translate(28px, 22vh) rotate(90deg);
+      }
+      50% {
+        transform: translate(58px, 48vh) rotate(185deg);
+      }
+      75% {
+        transform: translate(-10px, 74vh) rotate(280deg);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translate(-95px, 106vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.82);
+      box-shadow: 0 0 12px rgba(255,255,255,0.9);
+      animation: sparkleAnim 3s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    @keyframes sparkleAnim {
+      0%, 100% { transform: scale(0.5); opacity: 0.25; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+
+    @media (max-width: 1100px) {
+      .love-letter {
+        width: min(360px, 46vw);
+        font-size: 0.88rem;
+      }
+
+      .center-love {
+        font-size: 2.3rem;
+        left: 50%;
+        width: 90%;
+        white-space: normal;
+      }
+
+      .bouquet-wrap {
+        width: 480px;
+        height: 560px;
+        right: -35px;
+        bottom: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .top-text {
+        font-size: 1rem;
+        top: 16px;
+        padding: 0 14px;
+      }
+
+      .love-letter {
+        top: 14px;
+        left: 14px;
+        width: calc(100% - 28px);
+        max-width: none;
+        font-size: 0.82rem;
+        line-height: 1.5;
+      }
+
+      .center-love {
+        font-size: 1.8rem;
+        top: 47%;
+      }
+
+      .message-box {
+        left: 14px;
+        right: 14px;
+        max-width: none;
+        bottom: 14px;
+      }
+
+      .message-box h1 {
+        font-size: 1.1rem;
+      }
+
+      .counter {
+        font-size: 0.92rem;
+      }
+
+      .bouquet-wrap {
+        width: 360px;
+        height: 440px;
+        right: -46px;
+        bottom: -8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+
+    <div class="top-text">Para ti mis flores amarillas sabrosa mariana</div>
+
+    <div class="love-letter">
+      Mi princesa hermosa. Hoy quise regalarte estas flores amarillas como una forma de recordarte lo especial que eres para mí. Desde que llegaste a mi vida todo se siente más bonito más cálido y más lleno de amor. Tu sonrisa tu ternura y tu forma de ser hacen que cada día contigo tenga un brillo diferente y que mi corazón te elija una y otra vez.
+    </div>
+
+    <div class="center-love">Te amo mi princesa</div>
+
+    <div class="bouquet-wrap" id="bouquetWrap">
+      <div class="bouquet-stems" id="bouquetStems"></div>
+
+      <div class="bow">
+        <div class="bow-left"></div>
+        <div class="bow-right"></div>
+        <div class="bow-center"></div>
+        <div class="ribbon-left"></div>
+        <div class="ribbon-right"></div>
+      </div>
+    </div>
+
+    <div class="falling-container" id="fallingContainer"></div>
+
+    <div class="sparkle" style="top:12%; left:14%; animation-delay:0s;"></div>
+    <div class="sparkle" style="top:24%; left:66%; animation-delay:1s;"></div>
+    <div class="sparkle" style="top:48%; left:10%; animation-delay:2s;"></div>
+    <div class="sparkle" style="top:18%; left:46%; animation-delay:1.5s;"></div>
+    <div class="sparkle" style="top:62%; left:78%; animation-delay:0.7s;"></div>
+
+    <div class="message-box">
+      <h1>Nuestro amor se reforzó hace</h1>
+      <div class="counter" id="counter">Cargando contador...</div>
+    </div>
+  </div>
+
+  <script>
+    const bouquetWrap = document.getElementById("bouquetWrap");
+    const bouquetStems = document.getElementById("bouquetStems");
+    const fallingContainer = document.getElementById("fallingContainer");
+
+    const tieX = 535;
+    const tieY = 645;
+
+    const bouquetPoints = [
+      { x: 150, y: 250, s: 30 }, { x: 175, y: 225, s: 32 }, { x: 200, y: 200, s: 34 },
+      { x: 225, y: 175, s: 32 }, { x: 252, y: 152, s: 36 }, { x: 280, y: 132, s: 34 },
+      { x: 310, y: 122, s: 32 }, { x: 340, y: 132, s: 34 }, { x: 370, y: 150, s: 32 },
+      { x: 398, y: 172, s: 34 }, { x: 425, y: 198, s: 32 }, { x: 448, y: 228, s: 30 },
+
+      { x: 132, y: 300, s: 32 }, { x: 160, y: 282, s: 34 }, { x: 190, y: 258, s: 36 },
+      { x: 220, y: 236, s: 38 }, { x: 252, y: 214, s: 40 }, { x: 286, y: 202, s: 42 },
+      { x: 322, y: 210, s: 38 }, { x: 355, y: 226, s: 40 }, { x: 388, y: 246, s: 38 },
+      { x: 420, y: 270, s: 36 }, { x: 448, y: 294, s: 34 },
+
+      { x: 126, y: 352, s: 32 }, { x: 156, y: 336, s: 34 }, { x: 188, y: 315, s: 36 },
+      { x: 220, y: 294, s: 40 }, { x: 254, y: 276, s: 42 }, { x: 292, y: 278, s: 44 },
+      { x: 330, y: 292, s: 42 }, { x: 366, y: 312, s: 40 }, { x: 400, y: 335, s: 38 },
+      { x: 432, y: 360, s: 34 },
+
+      { x: 146, y: 410, s: 32 }, { x: 180, y: 394, s: 34 }, { x: 215, y: 376, s: 38 },
+      { x: 250, y: 360, s: 40 }, { x: 288, y: 362, s: 40 }, { x: 326, y: 376, s: 40 },
+      { x: 362, y: 394, s: 38 }, { x: 396, y: 416, s: 34 }, { x: 426, y: 442, s: 32 },
+
+      { x: 180, y: 470, s: 30 }, { x: 220, y: 454, s: 34 }, { x: 260, y: 442, s: 36 },
+      { x: 300, y: 444, s: 36 }, { x: 340, y: 458, s: 34 }, { x: 378, y: 476, s: 30 },
+
+      { x: 285, y: 94, s: 30 }, { x: 320, y: 86, s: 30 }, { x: 355, y: 95, s: 30 },
+      { x: 245, y: 118, s: 28 }, { x: 390, y: 120, s: 28 },
+
+      { x: 115, y: 330, s: 28 }, { x: 100, y: 390, s: 28 }, { x: 470, y: 330, s: 28 },
+      { x: 462, y: 392, s: 28 }, { x: 150, y: 154, s: 28 }, { x: 440, y: 170, s: 28 }
+    ];
+
+    function createLeaf(x, y, angle, scale = 1, delay = 0) {
+      const leaf = document.createElement("div");
+      leaf.className = "leaf";
+      leaf.style.width = (24 + Math.random() * 10) + "px";
+      leaf.style.height = (13 + Math.random() * 6) + "px";
+      leaf.style.right = x + "px";
+      leaf.style.bottom = y + "px";
+      leaf.style.transform = `rotate(${angle}deg) scale(${scale})`;
+      leaf.style.animationDelay = delay + "s";
+      bouquetStems.appendChild(leaf);
+    }
+
+    function createStemAndFlower(point, index) {
+      const dx = point.x - tieX;
+      const dy = point.y - tieY;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+
+      const stem = document.createElement("div");
+      stem.className = "stem-line";
+      stem.style.height = length + "px";
+      stem.style.width = (2.6 + Math.random() * 1.8) + "px";
+      stem.style.transform = `rotate(${angle}deg)`;
+      stem.style.animationDelay = (0.25 + index * 0.028) + "s";
+      bouquetStems.appendChild(stem);
+
+      if (index % 2 === 0) {
+        createLeaf(
+          155 + (-dx) * 0.28 + Math.random() * 10,
+          115 + (dy * -0.28) + Math.random() * 10,
+          -40 + Math.random() * 80,
+          0.8 + Math.random() * 0.4,
+          0.6 + index * 0.015
+        );
+      }
+
+      if (index % 3 === 0) {
+        createLeaf(
+          155 + (-dx) * 0.52 + Math.random() * 12,
+          115 + (dy * -0.52) + Math.random() * 10,
+          -60 + Math.random() * 120,
+          0.78 + Math.random() * 0.35,
+          0.8 + index * 0.014
+        );
+      }
+
+      const node = document.createElement("div");
+      node.className = "flower-node";
+      node.style.left = point.x + "px";
+      node.style.top = point.y + "px";
+      node.style.width = point.s + "px";
+      node.style.height = point.s + "px";
+      node.style.animationDelay = (0.9 + index * 0.04) + "s";
+      node.style.zIndex = 4 + Math.floor(point.y / 50);
+
+      const flower = document.createElement("div");
+      flower.className = "flower";
+      flower.style.width = point.s + "px";
+      flower.style.height = point.s + "px";
+      flower.style.transform = `translate(-50%, -50%) rotate(${(-14 + Math.random() * 28)}deg)`;
+
+      const petalsCount = 6 + Math.floor(Math.random() * 3);
+      const petalW = point.s * (0.24 + Math.random() * 0.07);
+      const petalH = point.s * (0.36 + Math.random() * 0.10);
+
+      for (let i = 0; i < petalsCount; i++) {
+        const angleDeg = (360 / petalsCount) * i + (Math.random() * 10 - 5);
+        const rad = angleDeg * Math.PI / 180;
+        const radius = point.s * (0.22 + Math.random() * 0.05);
+
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.style.width = petalW + "px";
+        petal.style.height = petalH + "px";
+        petal.style.left = (point.s / 2 + Math.cos(rad) * radius - petalW / 2) + "px";
+        petal.style.top = (point.s / 2 + Math.sin(rad) * radius - petalH / 2) + "px";
+        petal.style.transform = `rotate(${angleDeg + 90}deg)`;
+        petal.style.borderRadius =
+          (44 + Math.random() * 10) + "% " +
+          (44 + Math.random() * 10) + "% " +
+          (36 + Math.random() * 12) + "% " +
+          (36 + Math.random() * 12) + "%";
+        flower.appendChild(petal);
+      }
+
+      const center = document.createElement("div");
+      center.className = "center";
+      const centerSize = point.s * (0.22 + Math.random() * 0.07);
+      center.style.width = centerSize + "px";
+      center.style.height = centerSize + "px";
+      flower.appendChild(center);
+
+      node.appendChild(flower);
+      bouquetWrap.appendChild(node);
+    }
+
+    bouquetPoints.forEach((p, i) => createStemAndFlower(p, i));
+
+    function createFallingFlower() {
+      const item = document.createElement("div");
+      item.className = "falling-flower";
+
+      const size = 8 + Math.random() * 10;
+      item.style.left = Math.random() * window.innerWidth + "px";
+      item.style.width = size + "px";
+      item.style.height = size + "px";
+      item.style.animationDuration = 6 + Math.random() * 5 + "s";
+      item.style.animationDelay = Math.random() * 3 + "s";
+
+      const petalsCount = 5 + Math.floor(Math.random() * 2);
+
+      for (let i = 0; i < petalsCount; i++) {
+        const angleDeg = (360 / petalsCount) * i;
+        const rad = angleDeg * Math.PI / 180;
+        const pw = size * 0.34;
+        const ph = size * 0.50;
+
+        const petal = document.createElement("div");
+        petal.className = "mini-petal";
+        petal.style.width = pw + "px";
+        petal.style.height = ph + "px";
+        petal.style.left = (size / 2 + Math.cos(rad) * size * 0.18 - pw / 2) + "px";
+        petal.style.top = (size / 2 + Math.sin(rad) * size * 0.18 - ph / 2) + "px";
+        petal.style.transform = `rotate(${angleDeg + 90}deg)`;
+        item.appendChild(petal);
+      }
+
+      const center = document.createElement("div");
+      center.className = "mini-center";
+      center.style.width = size * 0.24 + "px";
+      center.style.height = size * 0.24 + "px";
+      item.appendChild(center);
+
+      fallingContainer.appendChild(item);
+    }
+
+    for (let i = 0; i < 46; i++) {
+      createFallingFlower();
+    }
+
+    function updateCounter() {
+      const startDate = new Date("2025-11-28T00:00:00");
+      const now = new Date();
+      const diff = now - startDate;
+
+      if (diff < 0) {
+        document.getElementById("counter").innerHTML = "Muy pronto comenzará nuestra historia";
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById("counter").innerHTML =
+        `<strong>${days}</strong> días ` +
+        `<strong>${hours}</strong> horas ` +
+        `<strong>${minutes}</strong> minutos ` +
+        `<strong>${seconds}</strong> segundos`;
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+  </script>
+</body>
+</html>
