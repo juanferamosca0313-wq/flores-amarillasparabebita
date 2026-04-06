@@ -1,744 +1,442 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flores Amarillas</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Flores Amarillas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100vh;overflow:hidden}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:linear-gradient(160deg,#fff4c2 0%,#ffe8a0 20%,#ffd6b8 55%,#ffc8d8 80%,#ffe0ee 100%);
+  color:#6b3f1d;
+}
+.scene{position:relative;width:100%;height:100vh;overflow:hidden}
 
-    body {
-      overflow: hidden;
-      font-family: Georgia, "Times New Roman", serif;
-      height: 100vh;
-      background: linear-gradient(135deg, #ffe88a 0%, #ffd8a8 30%, #ffc7d8 70%, #ffe4ef 100%);
-      color: #6b3f1d;
-    }
+.glow{position:absolute;border-radius:50%;pointer-events:none}
+.glow-a{width:700px;height:700px;top:-120px;left:-100px;
+  background:radial-gradient(circle,rgba(255,255,255,0.28) 0%,transparent 68%)}
+.glow-b{width:500px;height:500px;bottom:-60px;right:5%;
+  background:radial-gradient(circle,rgba(255,230,150,0.22) 0%,transparent 70%)}
 
-    .scene {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      overflow: hidden;
-    }
+/* PETAL FALL */
+.petal-fall{position:absolute;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.fp{position:absolute;top:-60px;opacity:0;animation:fp-fall linear infinite}
+@keyframes fp-fall{
+  0%  {opacity:0;transform:translate(0,-20px) rotate(0deg) scale(1)}
+  8%  {opacity:.85}
+  30% {transform:translate(var(--dx1),28vh) rotate(var(--r1)) scale(.95)}
+  60% {transform:translate(var(--dx2),62vh) rotate(var(--r2)) scale(.9)}
+  90% {opacity:.6}
+  100%{opacity:0;transform:translate(var(--dx3),108vh) rotate(var(--r3)) scale(.85)}
+}
 
-    .glow-1,
-    .glow-2 {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(14px);
-      pointer-events: none;
-    }
+/* TOP TITLE — highest z-index, always visible */
+.top-text{
+  position:absolute;top:18px;width:100%;text-align:center;
+  font-family:'Great Vibes',cursive;
+  font-size:2rem;color:#7a4120;letter-spacing:.5px;
+  text-shadow:0 2px 14px rgba(255,255,255,.7),0 0 30px rgba(255,255,255,.5);
+  opacity:0;animation:fadeD 1.8s ease forwards;animation-delay:3s;z-index:300
+}
+@keyframes fadeD{0%{opacity:0;transform:translateY(-10px)}100%{opacity:1;transform:translateY(0)}}
 
-    .glow-1 {
-      width: 620px;
-      height: 620px;
-      top: -40px;
-      left: -60px;
-      background: radial-gradient(circle, rgba(255,255,255,0.32) 0%, rgba(255,255,255,0.08) 45%, transparent 72%);
-      animation: floatGlow 9s ease-in-out infinite alternate;
-    }
+/* CENTER LOVE — bottom-left safe zone, above counter */
+.center-love{
+  position:absolute;
+  left:22px;
+  bottom:106px;
+  font-family:'Great Vibes',cursive;
+  font-size:2.6rem;
+  color:#6f3b1e;
+  text-align:left;
+  text-shadow:0 4px 20px rgba(255,255,255,.75),0 0 40px rgba(255,255,255,.5);
+  opacity:0;animation:fadeD 2s ease forwards;animation-delay:2.8s;
+  z-index:300;pointer-events:none;
+  line-height:1.1;
+}
 
-    .glow-2 {
-      width: 420px;
-      height: 420px;
-      right: 10%;
-      bottom: 10%;
-      background: radial-gradient(circle, rgba(255,245,200,0.18) 0%, rgba(255,255,255,0.04) 50%, transparent 75%);
-      animation: floatGlow2 10s ease-in-out infinite alternate;
-    }
+/* LOVE LETTER — tall narrow left column, below title, above center-love+counter */
+.love-letter{
+  position:absolute;
+  top:58px;
+  left:22px;
+  width:210px;
+  bottom:230px; /* leaves room for center-love + counter */
+  padding:16px 18px;
+  background:rgba(255,250,230,.54);
+  border:1px solid rgba(120,70,30,.14);
+  border-radius:20px;
+  backdrop-filter:blur(10px);
+  font-family:'Cormorant Garamond',serif;
+  font-size:.9rem;
+  font-weight:300;
+  font-style:italic;
+  line-height:1.82;
+  color:#6b3f1d;
+  letter-spacing:.15px;
+  overflow:hidden;
+  opacity:0;animation:fadeD 1.8s ease forwards;animation-delay:3.8s;z-index:300
+}
 
-    @keyframes floatGlow {
-      from { transform: translate(0, 0); }
-      to { transform: translate(28px, 22px); }
-    }
+/* COUNTER BOX — bottom-left */
+.message-box{
+  position:absolute;left:22px;bottom:18px;z-index:300;
+  width:210px;
+  padding:12px 18px;
+  background:rgba(255,250,230,.54);
+  border:1px solid rgba(120,70,30,.14);
+  border-radius:20px;backdrop-filter:blur(10px);
+  opacity:0;animation:fadeU 1.6s ease forwards;animation-delay:4.4s
+}
+@keyframes fadeU{0%{opacity:0;transform:translateY(14px)}100%{opacity:1;transform:translateY(0)}}
+.message-box h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.98rem;font-weight:400;font-style:italic;
+  margin-bottom:4px;color:#6b3f1d;letter-spacing:.2px;line-height:1.3;
+}
+.counter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.88rem;font-weight:300;line-height:1.65;color:#6b3f1d;
+}
+.counter strong{font-weight:500;color:#7d4215}
 
-    @keyframes floatGlow2 {
-      from { transform: translate(0, 0); }
-      to { transform: translate(-18px, -16px); }
-    }
+/* BOUQUET — right side */
+#bouquet-svg{
+  position:absolute;
+  right:-80px;
+  bottom:-50px;
+  z-index:30;
+  pointer-events:none;
+  overflow:visible;
+}
 
-    .top-text {
-      position: absolute;
-      top: 26px;
-      width: 100%;
-      text-align: center;
-      font-size: 1.4rem;
-      color: #77431e;
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 10px rgba(255,255,255,0.45);
-      opacity: 0;
-      transform: translateY(-10px);
-      animation: fadeSlideDown 1.8s ease forwards;
-      animation-delay: 3s;
-      z-index: 80;
-      padding: 0 20px;
-    }
+/* SPARKLES */
+.sparkle{position:absolute;border-radius:50%;background:rgba(255,255,255,.88);
+  box-shadow:0 0 10px rgba(255,255,255,.9);animation:spark 3s ease-in-out infinite;z-index:10}
+@keyframes spark{0%,100%{transform:scale(.4);opacity:.2}50%{transform:scale(1.5);opacity:1}}
 
-    .love-letter {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      width: min(420px, 42vw);
-      padding: 16px 18px;
-      background: rgba(255, 248, 228, 0.42);
-      border: 1px solid rgba(107, 63, 29, 0.12);
-      border-radius: 18px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 24px rgba(107, 63, 29, 0.08);
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: #6b3f1d;
-      opacity: 0;
-      transform: translateY(-12px);
-      animation: fadeSlideDown 1.8s ease forwards;
-      animation-delay: 3.7s;
-      z-index: 90;
-    }
-
-    .center-love {
-      position: absolute;
-      left: 48%;
-      top: 50%;
-      transform: translate(-50%, -50%) scale(0.92);
-      font-size: 3.2rem;
-      color: #6f3b1e;
-      text-align: center;
-      text-shadow: 0 4px 14px rgba(255,255,255,0.45);
-      opacity: 0;
-      animation: centerPop 1.8s ease forwards;
-      animation-delay: 2.6s;
-      z-index: 85;
-      white-space: nowrap;
-      pointer-events: none;
-    }
-
-    @keyframes fadeSlideDown {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes centerPop {
-      0% {
-        opacity: 0;
-        transform: translate(-50%, -44%) scale(0.88);
-      }
-      70% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1.04);
-      }
-      100% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-
-    .message-box {
-      position: absolute;
-      left: 24px;
-      bottom: 22px;
-      z-index: 100;
-      max-width: 420px;
-      padding: 16px 20px;
-      background: rgba(255, 248, 228, 0.42);
-      border: 1px solid rgba(107, 63, 29, 0.12);
-      border-radius: 18px;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 24px rgba(107, 63, 29, 0.08);
-      opacity: 0;
-      transform: translateY(14px);
-      animation: fadeUp 1.6s ease forwards;
-      animation-delay: 4.2s;
-    }
-
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .message-box h1 {
-      font-size: 1.35rem;
-      font-weight: normal;
-      margin-bottom: 8px;
-      color: #6b3f1d;
-    }
-
-    .counter {
-      font-size: 1.05rem;
-      line-height: 1.55;
-      color: #6b3f1d;
-    }
-
-    .counter strong {
-      color: #7d4215;
-    }
-
-    .bouquet-wrap {
-      position: absolute;
-      right: -10px;
-      bottom: -20px;
-      width: 700px;
-      height: 780px;
-      z-index: 30;
-      pointer-events: none;
-    }
-
-    .bouquet-stems {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    .stem-line {
-      position: absolute;
-      right: 155px;
-      bottom: 115px;
-      transform-origin: bottom center;
-      border-radius: 10px;
-      background: linear-gradient(to top, #4d7a30, #83b25c);
-      opacity: 0;
-      animation: growStem 1.3s ease forwards;
-    }
-
-    @keyframes growStem {
-      0% {
-        opacity: 0;
-        height: 0;
-      }
-      100% {
-        opacity: 0.9;
-      }
-    }
-
-    .leaf {
-      position: absolute;
-      background: linear-gradient(135deg, #8fcf64, #5f933b);
-      border-radius: 100% 0 100% 0;
-      opacity: 0;
-      animation: leafShow 1s ease forwards;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-
-    @keyframes leafShow {
-      from {
-        opacity: 0;
-        transform: scale(0.6) rotate(0deg);
-      }
-      to {
-        opacity: 0.95;
-      }
-    }
-
-    .flower-node {
-      position: absolute;
-      opacity: 0;
-      transform: scale(0.2) rotate(-6deg);
-      animation: bloom 0.95s ease forwards;
-      z-index: 4;
-    }
-
-    @keyframes bloom {
-      0% {
-        opacity: 0;
-        transform: scale(0.2) rotate(-8deg);
-      }
-      70% {
-        opacity: 1;
-        transform: scale(1.08) rotate(4deg);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-      }
-    }
-
-    .flower {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.06));
-    }
-
-    .petal {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #fff8bf 0%, #ffe56c 32%, #f7c81a 72%, #dfb100 100%);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
-
-    .center {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, #7b4c12 0%, #60370a 70%, #4a2708 100%);
-      z-index: 3;
-    }
-
-    .bow {
-      position: absolute;
-      right: 108px;
-      bottom: 102px;
-      width: 150px;
-      height: 112px;
-      z-index: 15;
-      opacity: 0;
-      transform: scale(0.7);
-      animation: bowShow 1.2s ease forwards;
-      animation-delay: 2.2s;
-    }
-
-    @keyframes bowShow {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    .bow-center {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 34px;
-      height: 42px;
-      background: linear-gradient(180deg, #be1722, #91101a);
-      border-radius: 10px;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-    }
-
-    .bow-left,
-    .bow-right {
-      position: absolute;
-      top: 18px;
-      width: 58px;
-      height: 42px;
-      background: linear-gradient(135deg, #d91f2d, #a7121d);
-      border-radius: 14px 26px 14px 26px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.12);
-    }
-
-    .bow-left {
-      left: 14px;
-      transform: rotate(-20deg);
-    }
-
-    .bow-right {
-      right: 14px;
-      transform: scaleX(-1) rotate(-20deg);
-    }
-
-    .ribbon-left,
-    .ribbon-right {
-      position: absolute;
-      top: 54px;
-      width: 13px;
-      height: 64px;
-      background: linear-gradient(180deg, #c61a26, #8e1018);
-      border-radius: 10px;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    }
-
-    .ribbon-left {
-      left: 56px;
-      transform: rotate(14deg);
-    }
-
-    .ribbon-right {
-      right: 56px;
-      transform: rotate(-10deg);
-    }
-
-    .falling-container {
-      position: absolute;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 20;
-    }
-
-    .falling-flower {
-      position: absolute;
-      top: -40px;
-      opacity: 0.95;
-      animation-name: fallWind;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
-
-    .mini-petal {
-      position: absolute;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #fff7a8 0%, #ffe24b 50%, #dfb300 100%);
-    }
-
-    .mini-center {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      background: #5b310d;
-    }
-
-    @keyframes fallWind {
-      0% {
-        transform: translate(0, -30px) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: 1;
-      }
-      25% {
-        transform: translate(28px, 22vh) rotate(90deg);
-      }
-      50% {
-        transform: translate(58px, 48vh) rotate(185deg);
-      }
-      75% {
-        transform: translate(-10px, 74vh) rotate(280deg);
-        opacity: 0.95;
-      }
-      100% {
-        transform: translate(-95px, 106vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-
-    .sparkle {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.82);
-      box-shadow: 0 0 12px rgba(255,255,255,0.9);
-      animation: sparkleAnim 3s ease-in-out infinite;
-      z-index: 10;
-    }
-
-    @keyframes sparkleAnim {
-      0%, 100% { transform: scale(0.5); opacity: 0.25; }
-      50% { transform: scale(1.4); opacity: 1; }
-    }
-
-    @media (max-width: 1100px) {
-      .love-letter {
-        width: min(360px, 46vw);
-        font-size: 0.88rem;
-      }
-
-      .center-love {
-        font-size: 2.3rem;
-        left: 50%;
-        width: 90%;
-        white-space: normal;
-      }
-
-      .bouquet-wrap {
-        width: 480px;
-        height: 560px;
-        right: -35px;
-        bottom: 0;
-      }
-    }
-
-    @media (max-width: 760px) {
-      .top-text {
-        font-size: 1rem;
-        top: 16px;
-        padding: 0 14px;
-      }
-
-      .love-letter {
-        top: 14px;
-        left: 14px;
-        width: calc(100% - 28px);
-        max-width: none;
-        font-size: 0.82rem;
-        line-height: 1.5;
-      }
-
-      .center-love {
-        font-size: 1.8rem;
-        top: 47%;
-      }
-
-      .message-box {
-        left: 14px;
-        right: 14px;
-        max-width: none;
-        bottom: 14px;
-      }
-
-      .message-box h1 {
-        font-size: 1.1rem;
-      }
-
-      .counter {
-        font-size: 0.92rem;
-      }
-
-      .bouquet-wrap {
-        width: 360px;
-        height: 440px;
-        right: -46px;
-        bottom: -8px;
-      }
-    }
-  </style>
+/* RESPONSIVE */
+@media(max-width:1200px){
+  .love-letter{width:190px;font-size:.86rem}
+  .message-box{width:190px}
+  .center-love{font-size:2.2rem;left:22px}
+  #bouquet-svg{width:680px;right:-90px}
+}
+@media(max-width:900px){
+  .love-letter{width:170px;font-size:.82rem;line-height:1.7}
+  .message-box{width:170px}
+  .center-love{font-size:1.9rem}
+  #bouquet-svg{width:560px;right:-80px}
+}
+@media(max-width:700px){
+  .top-text{font-size:1.5rem;top:12px}
+  .love-letter{
+    top:52px;left:10px;right:10px;width:auto;
+    bottom:auto;max-height:20vh;font-size:.78rem;line-height:1.6
+  }
+  .center-love{font-size:1.7rem;bottom:100px;left:10px}
+  .message-box{left:10px;right:10px;width:auto;bottom:10px}
+  #bouquet-svg{width:380px;right:-90px;bottom:-20px}
+}
+</style>
 </head>
 <body>
-  <div class="scene">
-    <div class="glow-1"></div>
-    <div class="glow-2"></div>
+<div class="scene">
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
 
-    <div class="top-text">Para ti mis flores amarillas sabrosa mariana</div>
+  <!-- Z-index 300: always on top -->
+  <div class="top-text">Para ti mis flores amarillas sabrosa Mariana</div>
 
-    <div class="love-letter">
-      Mi princesa hermosa. Hoy quise regalarte estas flores amarillas como una forma de recordarte lo especial que eres para mí. Desde que llegaste a mi vida todo se siente más bonito más cálido y más lleno de amor. Tu sonrisa tu ternura y tu forma de ser hacen que cada día contigo tenga un brillo diferente y que mi corazón te elija una y otra vez.
-    </div>
-
-    <div class="center-love">Te amo mi princesa</div>
-
-    <div class="bouquet-wrap" id="bouquetWrap">
-      <div class="bouquet-stems" id="bouquetStems"></div>
-
-      <div class="bow">
-        <div class="bow-left"></div>
-        <div class="bow-right"></div>
-        <div class="bow-center"></div>
-        <div class="ribbon-left"></div>
-        <div class="ribbon-right"></div>
-      </div>
-    </div>
-
-    <div class="falling-container" id="fallingContainer"></div>
-
-    <div class="sparkle" style="top:12%; left:14%; animation-delay:0s;"></div>
-    <div class="sparkle" style="top:24%; left:66%; animation-delay:1s;"></div>
-    <div class="sparkle" style="top:48%; left:10%; animation-delay:2s;"></div>
-    <div class="sparkle" style="top:18%; left:46%; animation-delay:1.5s;"></div>
-    <div class="sparkle" style="top:62%; left:78%; animation-delay:0.7s;"></div>
-
-    <div class="message-box">
-      <h1>Nuestro amor se reforzó hace</h1>
-      <div class="counter" id="counter">Cargando contador...</div>
-    </div>
+  <div class="love-letter">
+    Mi princesa hermosa. Hoy quise regalarte estas flores amarillas como una forma de recordarte lo especial que eres para mí. Desde que llegaste a mi vida todo se siente más bonito, más cálido y más lleno de amor. Tu sonrisa, tu ternura y tu forma de ser hacen que cada día contigo tenga un brillo diferente y que mi corazón te elija una y otra vez.
   </div>
 
-  <script>
-    const bouquetWrap = document.getElementById("bouquetWrap");
-    const bouquetStems = document.getElementById("bouquetStems");
-    const fallingContainer = document.getElementById("fallingContainer");
+  <div class="center-love">Te amo mi princesa</div>
 
-    const tieX = 535;
-    const tieY = 645;
+  <!-- Bouquet SVG: z-index 30 — behind UI elements -->
+  <svg id="bouquet-svg" width="800" height="960" viewBox="0 0 800 960" xmlns="http://www.w3.org/2000/svg"></svg>
 
-    const bouquetPoints = [
-      { x: 150, y: 250, s: 30 }, { x: 175, y: 225, s: 32 }, { x: 200, y: 200, s: 34 },
-      { x: 225, y: 175, s: 32 }, { x: 252, y: 152, s: 36 }, { x: 280, y: 132, s: 34 },
-      { x: 310, y: 122, s: 32 }, { x: 340, y: 132, s: 34 }, { x: 370, y: 150, s: 32 },
-      { x: 398, y: 172, s: 34 }, { x: 425, y: 198, s: 32 }, { x: 448, y: 228, s: 30 },
+  <div class="petal-fall" id="petalFall"></div>
 
-      { x: 132, y: 300, s: 32 }, { x: 160, y: 282, s: 34 }, { x: 190, y: 258, s: 36 },
-      { x: 220, y: 236, s: 38 }, { x: 252, y: 214, s: 40 }, { x: 286, y: 202, s: 42 },
-      { x: 322, y: 210, s: 38 }, { x: 355, y: 226, s: 40 }, { x: 388, y: 246, s: 38 },
-      { x: 420, y: 270, s: 36 }, { x: 448, y: 294, s: 34 },
+  <!-- Sparkles in safe zones -->
+  <div class="sparkle" style="top:10%;left:55%;width:7px;height:7px;animation-delay:0s;z-index:15"></div>
+  <div class="sparkle" style="top:20%;left:68%;width:6px;height:6px;animation-delay:1.1s;z-index:15"></div>
+  <div class="sparkle" style="top:44%;left:55%;width:8px;height:8px;animation-delay:2.1s;z-index:15"></div>
+  <div class="sparkle" style="top:16%;left:80%;width:5px;height:5px;animation-delay:1.5s;z-index:15"></div>
+  <div class="sparkle" style="top:32%;left:72%;width:5px;height:5px;animation-delay:2.6s;z-index:15"></div>
 
-      { x: 126, y: 352, s: 32 }, { x: 156, y: 336, s: 34 }, { x: 188, y: 315, s: 36 },
-      { x: 220, y: 294, s: 40 }, { x: 254, y: 276, s: 42 }, { x: 292, y: 278, s: 44 },
-      { x: 330, y: 292, s: 42 }, { x: 366, y: 312, s: 40 }, { x: 400, y: 335, s: 38 },
-      { x: 432, y: 360, s: 34 },
+  <div class="message-box">
+    <h1>Nuestro amor se reforzó hace</h1>
+    <div class="counter" id="counter">Cargando...</div>
+  </div>
+</div>
 
-      { x: 146, y: 410, s: 32 }, { x: 180, y: 394, s: 34 }, { x: 215, y: 376, s: 38 },
-      { x: 250, y: 360, s: 40 }, { x: 288, y: 362, s: 40 }, { x: 326, y: 376, s: 40 },
-      { x: 362, y: 394, s: 38 }, { x: 396, y: 416, s: 34 }, { x: 426, y: 442, s: 32 },
+<script>
+const svg = document.getElementById('bouquet-svg');
+const NS  = 'http://www.w3.org/2000/svg';
 
-      { x: 180, y: 470, s: 30 }, { x: 220, y: 454, s: 34 }, { x: 260, y: 442, s: 36 },
-      { x: 300, y: 444, s: 36 }, { x: 340, y: 458, s: 34 }, { x: 378, y: 476, s: 30 },
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  if(parent) parent.appendChild(e);
+  return e;
+}
 
-      { x: 285, y: 94, s: 30 }, { x: 320, y: 86, s: 30 }, { x: 355, y: 95, s: 30 },
-      { x: 245, y: 118, s: 28 }, { x: 390, y: 120, s: 28 },
+/* ===== DEFS ===== */
+const defs = el('defs',{},svg);
 
-      { x: 115, y: 330, s: 28 }, { x: 100, y: 390, s: 28 }, { x: 470, y: 330, s: 28 },
-      { x: 462, y: 392, s: 28 }, { x: 150, y: 154, s: 28 }, { x: 440, y: 170, s: 28 }
-    ];
+function mkPG(id,c1,c2,c3){
+  const g=el('radialGradient',{id,cx:'38%',cy:'32%',r:'68%',fx:'38%',fy:'32%'},defs);
+  el('stop',{'offset':'0%','stop-color':c1},g);
+  el('stop',{'offset':'45%','stop-color':c2},g);
+  el('stop',{'offset':'100%','stop-color':c3},g);
+  return `url(#${id})`;
+}
+const gp1=mkPG('gp1','#fffce0','#ffe033','#d9a500');
+const gp2=mkPG('gp2','#fffccc','#ffea55','#c89a00');
+const gp3=mkPG('gp3','#fff5b0','#ffd700','#b88800');
+const gp4=mkPG('gp4','#fffae8','#ffec70','#e0b000');
+const gp5=mkPG('gp5','#fff0a0','#ffc800','#a07000');
 
-    function createLeaf(x, y, angle, scale = 1, delay = 0) {
-      const leaf = document.createElement("div");
-      leaf.className = "leaf";
-      leaf.style.width = (24 + Math.random() * 10) + "px";
-      leaf.style.height = (13 + Math.random() * 6) + "px";
-      leaf.style.right = x + "px";
-      leaf.style.bottom = y + "px";
-      leaf.style.transform = `rotate(${angle}deg) scale(${scale})`;
-      leaf.style.animationDelay = delay + "s";
-      bouquetStems.appendChild(leaf);
-    }
+const cg=el('radialGradient',{id:'cg',cx:'40%',cy:'35%',r:'60%'},defs);
+el('stop',{'offset':'0%','stop-color':'#9b6c1e'},cg);
+el('stop',{'offset':'60%','stop-color':'#5a3508'},cg);
+el('stop',{'offset':'100%','stop-color':'#3a2003'},cg);
 
-    function createStemAndFlower(point, index) {
-      const dx = point.x - tieX;
-      const dy = point.y - tieY;
-      const length = Math.sqrt(dx * dx + dy * dy);
-      const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+const sg=el('linearGradient',{id:'sg',x1:'0',y1:'0',x2:'1',y2:'0'},defs);
+el('stop',{'offset':'0%','stop-color':'#3e6e22'},sg);
+el('stop',{'offset':'50%','stop-color':'#7ab848'},sg);
+el('stop',{'offset':'100%','stop-color':'#3e6e22'},sg);
 
-      const stem = document.createElement("div");
-      stem.className = "stem-line";
-      stem.style.height = length + "px";
-      stem.style.width = (2.6 + Math.random() * 1.8) + "px";
-      stem.style.transform = `rotate(${angle}deg)`;
-      stem.style.animationDelay = (0.25 + index * 0.028) + "s";
-      bouquetStems.appendChild(stem);
+const lg=el('linearGradient',{id:'lg',x1:'0',y1:'0',x2:'1',y2:'1'},defs);
+el('stop',{'offset':'0%','stop-color':'#a0d854'},lg);
+el('stop',{'offset':'100%','stop-color':'#4e8024'},lg);
 
-      if (index % 2 === 0) {
-        createLeaf(
-          155 + (-dx) * 0.28 + Math.random() * 10,
-          115 + (dy * -0.28) + Math.random() * 10,
-          -40 + Math.random() * 80,
-          0.8 + Math.random() * 0.4,
-          0.6 + index * 0.015
-        );
-      }
+const rg=el('linearGradient',{id:'rg',x1:'0',y1:'0',x2:'0',y2:'1'},defs);
+el('stop',{'offset':'0%','stop-color':'#e82233'},rg);
+el('stop',{'offset':'100%','stop-color':'#961018'},rg);
 
-      if (index % 3 === 0) {
-        createLeaf(
-          155 + (-dx) * 0.52 + Math.random() * 12,
-          115 + (dy * -0.52) + Math.random() * 10,
-          -60 + Math.random() * 120,
-          0.78 + Math.random() * 0.35,
-          0.8 + index * 0.014
-        );
-      }
+/* ===== LAYER GROUPS ===== */
+const stemG   = el('g',{},svg);
+const leafG   = el('g',{},svg);
+const flowerG = el('g',{},svg);
+const bowG    = el('g',{},svg);
 
-      const node = document.createElement("div");
-      node.className = "flower-node";
-      node.style.left = point.x + "px";
-      node.style.top = point.y + "px";
-      node.style.width = point.s + "px";
-      node.style.height = point.s + "px";
-      node.style.animationDelay = (0.9 + index * 0.04) + "s";
-      node.style.zIndex = 4 + Math.floor(point.y / 50);
+/* Tie point (center of bow, in SVG coords) */
+const TX=540, TY=860;
 
-      const flower = document.createElement("div");
-      flower.className = "flower";
-      flower.style.width = point.s + "px";
-      flower.style.height = point.s + "px";
-      flower.style.transform = `translate(-50%, -50%) rotate(${(-14 + Math.random() * 28)}deg)`;
+/* ===== 112 FLOWER POSITIONS ===== */
+/* Bouquet occupies roughly x:120–680, y:60–720 within the 800×960 SVG */
+const flowers = [
+  /* tip crown */
+  {x:330,y:68,s:34},{x:368,y:58,s:32},{x:406,y:64,s:34},
+  {x:442,y:78,s:32},{x:296,y:86,s:32},{x:474,y:92,s:32},
 
-      const petalsCount = 6 + Math.floor(Math.random() * 3);
-      const petalW = point.s * (0.24 + Math.random() * 0.07);
-      const petalH = point.s * (0.36 + Math.random() * 0.10);
+  /* ring 1 */
+  {x:270,y:118,s:40},{x:308,y:98,s:42},{x:350,y:84,s:44},
+  {x:392,y:78,s:46},{x:434,y:86,s:44},{x:472,y:102,s:42},
+  {x:506,y:124,s:40},{x:236,y:148,s:38},{x:536,y:152,s:38},
 
-      for (let i = 0; i < petalsCount; i++) {
-        const angleDeg = (360 / petalsCount) * i + (Math.random() * 10 - 5);
-        const rad = angleDeg * Math.PI / 180;
-        const radius = point.s * (0.22 + Math.random() * 0.05);
+  /* ring 2 */
+  {x:210,y:186,s:44},{x:248,y:162,s:46},{x:288,y:142,s:48},
+  {x:332,y:128,s:50},{x:376,y:120,s:52},{x:420,y:128,s:50},
+  {x:462,y:144,s:48},{x:502,y:166,s:46},{x:536,y:192,s:44},
+  {x:186,y:218,s:42},{x:560,y:220,s:42},
 
-        const petal = document.createElement("div");
-        petal.className = "petal";
-        petal.style.width = petalW + "px";
-        petal.style.height = petalH + "px";
-        petal.style.left = (point.s / 2 + Math.cos(rad) * radius - petalW / 2) + "px";
-        petal.style.top = (point.s / 2 + Math.sin(rad) * radius - petalH / 2) + "px";
-        petal.style.transform = `rotate(${angleDeg + 90}deg)`;
-        petal.style.borderRadius =
-          (44 + Math.random() * 10) + "% " +
-          (44 + Math.random() * 10) + "% " +
-          (36 + Math.random() * 12) + "% " +
-          (36 + Math.random() * 12) + "%";
-        flower.appendChild(petal);
-      }
+  /* ring 3 */
+  {x:172,y:258,s:48},{x:208,y:232,s:50},{x:248,y:208,s:52},
+  {x:290,y:190,s:54},{x:334,y:178,s:56},{x:380,y:172,s:58},
+  {x:424,y:178,s:56},{x:468,y:194,s:54},{x:508,y:214,s:52},
+  {x:544,y:242,s:50},{x:572,y:274,s:48},
 
-      const center = document.createElement("div");
-      center.className = "center";
-      const centerSize = point.s * (0.22 + Math.random() * 0.07);
-      center.style.width = centerSize + "px";
-      center.style.height = centerSize + "px";
-      flower.appendChild(center);
+  /* ring 4 */
+  {x:158,y:306,s:50},{x:192,y:278,s:52},{x:232,y:254,s:54},
+  {x:274,y:232,s:56},{x:318,y:216,s:58},{x:364,y:208,s:60},
+  {x:410,y:214,s:58},{x:454,y:230,s:56},{x:494,y:252,s:54},
+  {x:530,y:278,s:52},{x:560,y:308,s:50},{x:582,y:344,s:48},
 
-      node.appendChild(flower);
-      bouquetWrap.appendChild(node);
-    }
+  /* ring 5 */
+  {x:152,y:358,s:52},{x:184,y:330,s:54},{x:220,y:304,s:56},
+  {x:260,y:280,s:58},{x:304,y:260,s:60},{x:350,y:250,s:62},
+  {x:398,y:256,s:60},{x:442,y:274,s:58},{x:482,y:296,s:56},
+  {x:518,y:324,s:54},{x:548,y:356,s:52},{x:568,y:394,s:48},
 
-    bouquetPoints.forEach((p, i) => createStemAndFlower(p, i));
+  /* ring 6 */
+  {x:154,y:414,s:52},{x:186,y:386,s:54},{x:222,y:360,s:56},
+  {x:262,y:336,s:58},{x:306,y:316,s:60},{x:352,y:306,s:62},
+  {x:400,y:312,s:60},{x:444,y:330,s:58},{x:484,y:354,s:56},
+  {x:518,y:382,s:54},{x:546,y:416,s:50},
 
-    function createFallingFlower() {
-      const item = document.createElement("div");
-      item.className = "falling-flower";
+  /* ring 7 */
+  {x:162,y:472,s:50},{x:196,y:444,s:52},{x:234,y:418,s:54},
+  {x:274,y:396,s:56},{x:318,y:378,s:58},{x:364,y:370,s:60},
+  {x:410,y:376,s:58},{x:454,y:394,s:56},{x:492,y:418,s:54},
+  {x:524,y:448,s:50},{x:548,y:484,s:48},
 
-      const size = 8 + Math.random() * 10;
-      item.style.left = Math.random() * window.innerWidth + "px";
-      item.style.width = size + "px";
-      item.style.height = size + "px";
-      item.style.animationDuration = 6 + Math.random() * 5 + "s";
-      item.style.animationDelay = Math.random() * 3 + "s";
+  /* ring 8 */
+  {x:178,y:532,s:50},{x:214,y:504,s:52},{x:254,y:478,s:54},
+  {x:296,y:458,s:56},{x:342,y:446,s:58},{x:388,y:448,s:58},
+  {x:432,y:462,s:56},{x:472,y:484,s:54},{x:506,y:512,s:50},
+  {x:534,y:546,s:48},
 
-      const petalsCount = 5 + Math.floor(Math.random() * 2);
+  /* ring 9 */
+  {x:200,y:594,s:48},{x:240,y:564,s:50},{x:282,y:540,s:52},
+  {x:328,y:524,s:54},{x:375,y:520,s:54},{x:420,y:530,s:52},
+  {x:462,y:550,s:50},{x:498,y:578,s:48},
 
-      for (let i = 0; i < petalsCount; i++) {
-        const angleDeg = (360 / petalsCount) * i;
-        const rad = angleDeg * Math.PI / 180;
-        const pw = size * 0.34;
-        const ph = size * 0.50;
+  /* ring 10 base */
+  {x:234,y:654,s:46},{x:278,y:628,s:48},{x:325,y:610,s:50},
+  {x:372,y:606,s:50},{x:419,y:616,s:48},{x:460,y:638,s:46},
+  {x:493,y:668,s:44},
 
-        const petal = document.createElement("div");
-        petal.className = "mini-petal";
-        petal.style.width = pw + "px";
-        petal.style.height = ph + "px";
-        petal.style.left = (size / 2 + Math.cos(rad) * size * 0.18 - pw / 2) + "px";
-        petal.style.top = (size / 2 + Math.sin(rad) * size * 0.18 - ph / 2) + "px";
-        petal.style.transform = `rotate(${angleDeg + 90}deg)`;
-        item.appendChild(petal);
-      }
+  /* outer edge fillers */
+  {x:140,y:340,s:40},{x:132,y:410,s:38},{x:144,y:482,s:38},
+  {x:600,y:278,s:40},{x:596,y:350,s:38},{x:582,y:428,s:38},
+  {x:560,y:500,s:36},{x:162,y:554,s:38},
+];
 
-      const center = document.createElement("div");
-      center.className = "mini-center";
-      center.style.width = size * 0.24 + "px";
-      center.style.height = size * 0.24 + "px";
-      item.appendChild(center);
+const grads=[gp1,gp2,gp3,gp4,gp5];
 
-      fallingContainer.appendChild(item);
-    }
+flowers.forEach((f,fi)=>{
+  const dx=f.x-TX, dy=f.y-TY;
+  const len=Math.sqrt(dx*dx+dy*dy);
+  const sw=1.6+(fi%4)*.45;
 
-    for (let i = 0; i < 46; i++) {
-      createFallingFlower();
-    }
+  const stemEl=el('line',{
+    x1:TX,y1:TY,x2:f.x,y2:f.y,
+    stroke:'url(#sg)','stroke-width':sw,'stroke-linecap':'round',
+    'stroke-dasharray':len,'stroke-dashoffset':len,opacity:'.82'
+  },stemG);
+  el('animate',{
+    attributeName:'stroke-dashoffset',from:len,to:0,
+    dur:'.55s',fill:'freeze',begin:(120+fi*18)+'ms'
+  },stemEl);
 
-    function updateCounter() {
-      const startDate = new Date("2025-11-28T00:00:00");
-      const now = new Date();
-      const diff = now - startDate;
+  /* leaf every other */
+  if(fi%2===0){
+    const t=.36+((fi*7)%20)*.01;
+    const lx=f.x+(TX-f.x)*t+((fi%5)-2)*7;
+    const ly=f.y+(TY-f.y)*t+((fi%3)-1)*5;
+    const lw=13+(fi%7)*1.5;
+    const lh=7+(fi%4);
+    const lr=-55+(fi*23)%110;
+    const lf=el('ellipse',{cx:lx,cy:ly,rx:lw/2,ry:lh/2,
+      fill:'url(#lg)',opacity:'0',transform:`rotate(${lr},${lx},${ly})`},leafG);
+    el('animate',{attributeName:'opacity',from:'0',to:'.88',
+      dur:'.5s',fill:'freeze',begin:(650+fi*18)+'ms'},lf);
+  }
 
-      if (diff < 0) {
-        document.getElementById("counter").innerHTML = "Muy pronto comenzará nuestra historia";
-        return;
-      }
+  /* flower */
+  const petN=6+(fi%4);
+  const grad=grads[fi%5];
+  const pW=f.s*.27, pH=f.s*.44, pR=f.s*.23;
+  const rot=(fi*19%36)-18;
+  const cSz=f.s*.13+1.5;
 
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+  const fOuter=el('g',{transform:`translate(${f.x},${f.y}) rotate(${rot})`},flowerG);
+  const fInner=el('g',{transform:'scale(0.04)',opacity:'0'},fOuter);
 
-      document.getElementById("counter").innerHTML =
-        `<strong>${days}</strong> días ` +
-        `<strong>${hours}</strong> horas ` +
-        `<strong>${minutes}</strong> minutos ` +
-        `<strong>${seconds}</strong> segundos`;
-    }
+  for(let p=0;p<petN;p++){
+    const a=(360/petN)*p, ra=a*Math.PI/180;
+    const px=Math.cos(ra)*pR, py=Math.sin(ra)*pR;
+    el('ellipse',{cx:px,cy:py,rx:pW/2,ry:pH/2,fill:grad,
+      transform:`rotate(${a+90},${px},${py})`,
+      stroke:'rgba(190,150,0,.14)','stroke-width':'.4'},fInner);
+  }
+  el('circle',{cx:0,cy:0,r:cSz,fill:'url(#cg)'},fInner);
+  el('circle',{cx:-cSz*.2,cy:-cSz*.28,r:cSz*.3,fill:'rgba(255,255,255,.22)'},fInner);
 
-    updateCounter();
-    setInterval(updateCounter, 1000);
-  </script>
+  setTimeout(()=>{
+    fInner.style.transition=`opacity .26s ease, transform .48s cubic-bezier(.34,1.56,.64,1)`;
+    fInner.setAttribute('opacity','1');
+    fInner.setAttribute('transform','scale(1)');
+  }, 720+fi*30);
+});
+
+/* ===== BOW ===== */
+(()=>{
+  const items=[
+    ['path',{d:`M${TX-12},${TY+4} Q${TX-42},${TY+58} ${TX-28},${TY+112}`,
+      fill:'none',stroke:'url(#rg)','stroke-width':'13','stroke-linecap':'round',opacity:'0',id:'r1'}],
+    ['path',{d:`M${TX+10},${TY+4} Q${TX+40},${TY+54} ${TX+24},${TY+108}`,
+      fill:'none',stroke:'url(#rg)','stroke-width':'13','stroke-linecap':'round',opacity:'0',id:'r2'}],
+    ['path',{d:`M${TX},${TY} C${TX-96},${TY-66} ${TX-108},${TY-22} ${TX},${TY}`,
+      fill:'#d01825',stroke:'#a00f1a','stroke-width':'1',opacity:'0',id:'bl'}],
+    ['path',{d:`M${TX},${TY} C${TX+94},${TY-64} ${TX+106},${TY-20} ${TX},${TY}`,
+      fill:'#c21320',stroke:'#a00f1a','stroke-width':'1',opacity:'0',id:'br'}],
+    ['ellipse',{cx:TX,cy:TY,rx:20,ry:16,fill:'#e01a28',stroke:'#900e18','stroke-width':'1',opacity:'0',id:'bk'}],
+    ['ellipse',{cx:TX-42,cy:TY-28,rx:12,ry:7,fill:'rgba(255,255,255,.24)',
+      transform:`rotate(-25,${TX-42},${TY-28})`,opacity:'0',id:'bh1'}],
+    ['ellipse',{cx:TX+44,cy:TY-26,rx:12,ry:7,fill:'rgba(255,255,255,.24)',
+      transform:`rotate(25,${TX+44},${TY-26})`,opacity:'0',id:'bh2'}],
+  ];
+  items.forEach(([tag,attrs])=>el(tag,attrs,bowG));
+  setTimeout(()=>{
+    ['r1','r2','bl','br','bk','bh1','bh2'].forEach((id,i)=>{
+      const e=document.getElementById(id);if(!e)return;
+      setTimeout(()=>{e.style.transition='opacity .6s ease';e.setAttribute('opacity','1');},i*55);
+    });
+  },2800);
+})();
+
+/* ===== FALLING PETALS ===== */
+const pf=document.getElementById('petalFall');
+const cols=[
+  ['#fff9be','#ffe033','#c89000'],['#fffccc','#ffea55','#d4a800'],
+  ['#fff0a8','#ffd700','#b88400'],['#fffae0','#ffec60','#daa000'],
+];
+function makePetal(){
+  const w=document.createElement('div');
+  w.className='fp';
+  const sz=9+Math.random()*13;
+  const c=cols[Math.floor(Math.random()*4)];
+  const n=5+Math.floor(Math.random()*2);
+  const dx1=(Math.random()-.3)*60,dx2=dx1+(Math.random()-.4)*80,dx3=dx2+(Math.random()-.5)*55;
+  const r1=Math.random()*200,r2=r1+Math.random()*160,r3=r2+Math.random()*120;
+  w.style.cssText=`left:${Math.random()*window.innerWidth}px;width:${sz}px;height:${sz}px;`+
+    `--dx1:${dx1}px;--dx2:${dx2}px;--dx3:${dx3}px;`+
+    `--r1:${r1}deg;--r2:${r2}deg;--r3:${r3}deg;`+
+    `animation-duration:${7+Math.random()*9}s;animation-delay:${Math.random()*7}s;position:absolute;top:-50px`;
+  const sv=document.createElementNS(NS,'svg');
+  sv.setAttribute('viewBox',`-${sz/2} -${sz/2} ${sz} ${sz}`);
+  sv.setAttribute('width',sz);sv.setAttribute('height',sz);
+  sv.style.cssText='overflow:visible;opacity:.9';
+  const pw=sz*.3,ph=sz*.48,pr=sz*.2;
+  for(let i=0;i<n;i++){
+    const a=(360/n)*i,ra=a*Math.PI/180;
+    const cx=Math.cos(ra)*pr,cy=Math.sin(ra)*pr;
+    const pe=document.createElementNS(NS,'ellipse');
+    pe.setAttribute('cx',cx);pe.setAttribute('cy',cy);
+    pe.setAttribute('rx',pw/2);pe.setAttribute('ry',ph/2);
+    pe.setAttribute('fill',c[1]);pe.setAttribute('stroke',c[2]);pe.setAttribute('stroke-width','.4');
+    pe.setAttribute('transform',`rotate(${a+90},${cx},${cy})`);
+    sv.appendChild(pe);
+  }
+  const cc=document.createElementNS(NS,'circle');
+  cc.setAttribute('cx',0);cc.setAttribute('cy',0);
+  cc.setAttribute('r',sz*.12);cc.setAttribute('fill','#5a3508');
+  sv.appendChild(cc);
+  w.appendChild(sv);
+  pf.appendChild(w);
+}
+for(let i=0;i<60;i++) makePetal();
+
+/* ===== COUNTER ===== */
+function tick(){
+  const s=new Date('2025-11-28T00:00:00'),n=new Date(),d=n-s;
+  if(d<0){document.getElementById('counter').innerHTML='Muy pronto comenzará nuestra historia';return;}
+  const ts=Math.floor(d/1000);
+  const dy=Math.floor(ts/86400),h=Math.floor((ts%86400)/3600),m=Math.floor((ts%3600)/60),sc=ts%60;
+  document.getElementById('counter').innerHTML=
+    `<strong>${dy}</strong> días &nbsp;<strong>${h}</strong> h &nbsp;<strong>${m}</strong> min &nbsp;<strong>${sc}</strong> seg`;
+}
+tick();setInterval(tick,1000);
+</script>
 </body>
 </html>
